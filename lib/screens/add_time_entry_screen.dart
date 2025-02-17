@@ -5,14 +5,16 @@ import '../models/time_entry.dart';
 import '../providers/time_entry_provider.dart';
 
 class AddTimeEntryScreen extends StatefulWidget {
+  const AddTimeEntryScreen({super.key});
+
   @override
-  _AddTimeEntryScreenState createState() => _AddTimeEntryScreenState();
+  AddTimeEntryScreenState createState() => AddTimeEntryScreenState();
 }
 
-class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
+class AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   final _formKey = GlobalKey<FormState>();
-  String projectId = '';
-  String taskId = '';
+  String? projectId;
+  String? taskId;
   double totalTime = 0.0;
   DateTime date = DateTime.now();
   String notes = '';
@@ -34,6 +36,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                     projectId = newValue!;
                 });
                 },
+                validator: (value) => value == null ? 'Please select a project' : null,
                 decoration: InputDecoration(labelText: 'Project'),
                 items: <String>['Project 1', 'Project 2', 'Project 3'] // Dummy project names
                     .map<DropdownMenuItem<String>>((String value) {
@@ -50,6 +53,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                     taskId = newValue!;
                 });
                 },
+                validator: (value) => value == null ? 'Please select a task' : null,
                 decoration: InputDecoration(labelText: 'Task'),
                 items: <String>['Task 1', 'Task 2', 'Task 3'] // Dummy task names
                     .map<DropdownMenuItem<String>>((String value) {
@@ -90,8 +94,8 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                     Provider.of<TimeEntryProvider>(context, listen: false)
                         .addTimeEntry(TimeEntry(
                         id: DateTime.now().toString(), // Simple ID generation
-                        projectId: projectId,
-                        taskId: taskId,
+                        projectId: projectId!,
+                        taskId: taskId!,
                         totalTime: totalTime,
                         date: date,
                         notes: notes,
