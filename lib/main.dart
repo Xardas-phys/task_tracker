@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/time_entry_provider.dart';
+import 'providers/project_task_provider.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initLocalStorage();
   runApp( MultiProvider(
       providers: [
         ChangeNotifierProvider<TimeEntryProvider>(
-          create: (_) => TimeEntryProvider(),
+          create: (_) => TimeEntryProvider(localStorage),
+        ),
+        ChangeNotifierProvider<ProjectTaskProvider>(
+          create: (_) => ProjectTaskProvider(localStorage),
         ),
         
       ],
